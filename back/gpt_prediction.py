@@ -34,7 +34,7 @@ def generate_token(username):
     token = jwt.encode(payload, app.secret_key, algorithm="HS256")
     return token
 
-@app.route('/login/', methods=['POST'])
+@app.route('/login', methods=['POST'])
 def login():
     if request.method == 'POST':
         data = request.json
@@ -65,5 +65,5 @@ def get_economic_prediction():
     prediction = response.choices[0].text.strip()
     return jsonify({"prediction": prediction})
 
-if __name__ == 'main':
+if __name__ == '__main__':
     app.run(debug=True)

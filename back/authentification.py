@@ -4,10 +4,10 @@ import bcrypt
 conn = sqlite3.connect("users.sqlite")
 cursor = conn.cursor()
 
-cursor.execute("""CREATE TABLE IF NOT EXIST Users{
+cursor.execute("""CREATE TABLE IF NOT EXISTS Users (
     id INT AUTO_INCREMENT PRIMARY KEY,
     username VARCHAR(50) NOT NULL UNIQUE,
-    password VARCHAR(32) NOT NULL};""")
+    password VARCHAR(32) NOT NULL);""")
 
 
 def hashing(password):
