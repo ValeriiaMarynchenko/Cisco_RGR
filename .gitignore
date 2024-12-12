@@ -23,4 +23,4 @@ yarn-debug.log*
 yarn-error.log*
 
 # configuration
-/back/gpt_config.ini
+/back/config.ini

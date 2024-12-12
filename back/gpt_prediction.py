@@ -7,8 +7,8 @@ import jwt
 import datetime
 
 config = configparser.ConfigParser()
-config.read('gpt_config.ini')
-openai_api_key = config["gpt"]["gpt_api_key"]
+config.read('config.ini')
+openai_api_key = config['gpt']['gpt_api_key']
 
 app = Flask(__name__)
 app.secret_key = config["authentification"]["secret_key"]
@@ -34,20 +34,36 @@ def generate_token(username):
     token = jwt.encode(payload, app.secret_key, algorithm="HS256")
     return token
 
+
+@app.route('/sign_up', methods=['POST'])
+def sign_up():
+    data = request.json
+    username = data.get("username")
+    password = data.get("password")
+
+    if not username or not password:
+        return jsonify({"message": "missed username or password"}), 400
+
+    if authentification.add_new_user(username, password) == "user exist":
+        return jsonify({"message": "user exists"}), 409
+
+    return jsonify({"message": "success"}), 201
+
+
 @app.route('/login', methods=['POST'])
 def login():
     if request.method == 'POST':
         data = request.json
         username = data.get("username")
         password = data.get("password")
-        if authentification.check_credentials(username,authentification.hashing(password)) == username:
+        if authentification.check_credentials(username, password) is not None:
             session['username'] = username
             token = generate_token(username)
             response = make_response(jsonify({"token": token}))
             response.set_cookie("session_token", token, httponly=True)
             return response
         else:
-            return jsonify({"message": "Невірний логін або пароль"}), 401
+            return jsonify({"message": "bad credentials"}), 401
 
 
 @app.route('/api/', methods=['GET'])
