@@ -1,14 +1,17 @@
 import { useState } from 'react'
 import {Form, Input, Container, Row, Col, Button, ButtonGroup} from 'reactstrap'
+import { useNavigate } from 'react-router-dom';
 import { auth } from '../api/'
+import { register } from './routes';
 
 const Login = (props) => {
+    const navigate = useNavigate();
     const [password, setPassword] = useState("")
     const [login, setLogin] = useState("")
     
     const handleSubmit = () => {
         auth({login, password})
-    }
+    }    
 
     return (
         <Container>
@@ -40,7 +43,7 @@ const Login = (props) => {
                         />
                         <ButtonGroup className='pt-3 pb-1'>
                             <Button type='button' onClick={handleSubmit}>У кабінет</Button>
-                            <Button color="dark" type='button'>Зареєструватись</Button>
+                            <Button color="dark" onClick={() => navigate(register)} type='button'>Зареєструватись</Button>
                         </ButtonGroup>
                     </Form>    
                 </div>
