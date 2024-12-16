@@ -1,16 +1,27 @@
 import { useState } from 'react'
-import {Form, Input, Container, Row, Col, Button, ButtonGroup} from 'reactstrap'
+import {Form, Input, Container, Row, Col, Button, ButtonGroup, Spinner, Badge} from 'reactstrap'
 import { useNavigate } from 'react-router-dom';
 import { auth } from '../api/'
-import { register } from './routes';
+import { dashboard, register } from './routes';
 
 const Login = (props) => {
     const navigate = useNavigate();
+    const [loading, setLoading] = useState(false)
     const [password, setPassword] = useState("")
     const [login, setLogin] = useState("")
+    const [error, setError] = useState("")
     
-    const handleSubmit = () => {
-        auth({login, password})
+    const handleSubmit = async () => {
+        setLoading(true)
+        const {token, message} = await auth(login, password)
+        if (token) {
+            setLoading(false)
+            localStorage.setItem("token", token)
+            navigate(dashboard)
+        } else {
+            setLoading(false)
+            setError(message)
+        }
     }    
 
     return (
@@ -41,8 +52,13 @@ const Login = (props) => {
                             placeholder='Введіть пароль'
                             className='input'
                         />
+                        {error && (
+                            <div className='justrify-center'>
+                                <Badge color='danger'>{error}</Badge>
+                            </div>
+                        )}
                         <ButtonGroup className='pt-3 pb-1'>
-                            <Button type='button' onClick={handleSubmit}>У кабінет</Button>
+                            <Button type='button' onClick={handleSubmit} disabled={loading}>{loading ? <Spinner/> : "У кабінет"}</Button>
                             <Button color="dark" onClick={() => navigate(register)} type='button'>Зареєструватись</Button>
                         </ButtonGroup>
                     </Form>    

@@ -1,17 +1,22 @@
 import openai
 from flask import Flask, request, jsonify, session, make_response
+from flask_cors import CORS
 import random
 import configparser
 import authentification
 import jwt
 import datetime
+import os
 
 config = configparser.ConfigParser()
 config.read('config.ini')
 openai_api_key = config['gpt']['gpt_api_key']
 
 app = Flask(__name__)
+CORS(app)
 app.secret_key = config["authentification"]["secret_key"]
+app.secret_key = os.getenv("SECRET_KEY", "default-secret-key")
+
 # Set your OpenAI API key
 openai.api_key = openai_api_key
 

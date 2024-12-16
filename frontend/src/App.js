@@ -9,8 +9,7 @@ import { dashboard, login, register } from './pages/routes';
 function App() {
   
     const isAuthenticated = () => {
-      // Replace with real authentication logic
-      return localStorage.getItem('authToken');
+      return localStorage.getItem('token');
     };
     return (      
         <Router>

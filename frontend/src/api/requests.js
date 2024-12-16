@@ -18,6 +18,7 @@ const request = async ({
   baseURL = API_URL,
   responseType = 'json',
 }) => {
+  console.log(API_URL)
   const response = await http({
     method,
     data,

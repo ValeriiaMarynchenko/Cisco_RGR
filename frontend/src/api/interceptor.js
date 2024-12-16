@@ -21,10 +21,10 @@ http.interceptors.request.use(
 )
 http.interceptors.response.use(
   async (response) => {
-    return response
+    return response.data
   },
   async (error) => {
-    return Promise.reject(error)
+    return Promise.resolve(error.response.data)
   }
 )
 export default http
