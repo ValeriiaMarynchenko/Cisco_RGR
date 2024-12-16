@@ -4,12 +4,13 @@ import configparser
 import authentification
 import jwt
 import datetime
-import time
+from flask_cors import CORS
 
 config = configparser.ConfigParser()
 config.read('config.ini')
 
 app = Flask(__name__)
+CORS(app)
 app.secret_key = config["authentification"]["secret_key"]
 
 exchange_api_key = config["exchange"]["exchange_api_key"]
