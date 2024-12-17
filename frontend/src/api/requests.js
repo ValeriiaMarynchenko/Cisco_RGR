@@ -17,8 +17,8 @@ const request = async ({
   method = REQUEST_METHODS.GET,
   baseURL = API_URL,
   responseType = 'json',
+  headers,
 }) => {
-  console.log(API_URL)
   const response = await http({
     method,
     data,
@@ -26,12 +26,13 @@ const request = async ({
     responseType,
     baseURL: baseURL,
     crossOriginIsolated: true,
+    headers
   })
   return response
 }
 
-const getRequest = async ({ url, baseURL }) => {
-  return await request({ url, method: REQUEST_METHODS.GET, baseURL })
+const getRequest = async ({ url, baseURL, headers }) => {
+  return await request({ url, method: REQUEST_METHODS.GET, baseURL, headers })
 }
 
 const postRequest = async ({ url, data, baseURL }) => {

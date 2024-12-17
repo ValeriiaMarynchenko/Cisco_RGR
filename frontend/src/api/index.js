@@ -1,4 +1,4 @@
-import { postRequest } from "./requests";
+import { getRequest, postRequest } from "./requests";
 
 export const auth = async (login, password) => {
     const res =  await postRequest({
@@ -19,5 +19,14 @@ export const register = async (login, password) => {
             password
         }
     });
+    return res
+}
+
+export const fetchHome = async (headers) => {
+    console.log(headers)
+    const res = await getRequest({
+        url: "/home",
+        headers
+    })
     return res
 }

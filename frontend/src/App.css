@@ -4,6 +4,23 @@ body {
   background-image: url("assets/images/background.jpg");
 }
 
+body span {
+  font-size: 26px;
+  line-height: 1;
+}
+
+.bg-main {
+  background-color: #282c34;
+}
+
+.box-shadow {
+  box-shadow: 0px 0px 16px 1px #fdfcd3;
+}
+
+.main-container {
+  border-radius: 8px;
+}
+
 body * {
   color: white;
 }

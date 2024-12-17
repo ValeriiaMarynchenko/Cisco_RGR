@@ -10,7 +10,7 @@ config = configparser.ConfigParser()
 config.read('config.ini')
 
 app = Flask(__name__)
-CORS(app)
+CORS(app, resources={r"*": {"origins": "http://localhost:3000"}}, supports_credentials=True)
 app.secret_key = config["authentification"]["secret_key"]
 
 exchange_api_key = config["exchange"]["exchange_api_key"]
@@ -72,7 +72,7 @@ def login():
 # @app.route('/api/', methods=['GET'])
 def get_economic_prediction():
     try:
-        response = requests.get("https://v2.jokeapi.dev/joke/Programming")
+        response = requests.get("https://v2.jokeapi.dev/joke/Programming,Dark")
         prediction = response.json()
         if prediction["type"] == "single":
             prediction = prediction["joke"]

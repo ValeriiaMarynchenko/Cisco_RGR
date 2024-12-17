@@ -24,6 +24,10 @@ http.interceptors.response.use(
     return response.data
   },
   async (error) => {
+    switch(error.code) {
+      case "ERR_NETWORK": 
+      return Promise.reject(error)
+    }
     return Promise.resolve(error.response.data)
   }
 )
