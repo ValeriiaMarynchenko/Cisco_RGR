@@ -9,7 +9,7 @@ const Dashboard = (props) => {
     const navigate = useNavigate()
     const [rate, setRate] = useState(null);
     const [userName, setUserName] = useState('')
-    const [bonds, setBonds] = useState(null)
+    const [bonds, setBonds] = useState([])
     const [joke, setJoke] = useState(null)
 
     useEffect(() => {
@@ -22,10 +22,11 @@ const Dashboard = (props) => {
                 navigate(login)
                 return
             }
-            const {economic_prediction, exchange_rates, username} = response
+            const {economic_prediction, exchange_rates, username, stock_prices} = response
             setJoke(economic_prediction)
             setRate(exchange_rates)
             setUserName(username)
+            setBonds(stock_prices)
         }
         getData()
         console.log(1)
@@ -58,27 +59,31 @@ const Dashboard = (props) => {
                         <h3>Курс валют</h3>
                         {rate && (
                             <div>
-                                <div className="d-flex align-items-center">
-                                    <span>{<DOLLARIcon/>}</span>
-                                    <span>{rate.USD}</span>
-                                    <span>-</span>
-                                    <span>{<EURIcon/>}</span>
-                                    <span>{rate.EUR}</span>
-                                </div>
-                                <div className="d-flex align-items-center">
-                                    <span>{<DOLLARIcon/>}</span>
-                                    <span>{rate.USD}</span>
-                                    <span>-</span>
-                                    <span>{<UAHIcon/>}</span>
-                                    <span>{rate.UAH}</span>
-                                </div>
-                                <div className="d-flex align-items-center">
-                                    <span>{<EURIcon/>}</span>
-                                    <span>1</span>
-                                    <span>-</span>
-                                    <span>{<UAHIcon/>}</span>
-                                    <span>{Number(rate.UAH / (rate.USD / rate.EUR)).toFixed(4)}</span>
-                                </div>
+                                <Row className="">
+                                    <Col md={4} className="d-flex align-items-center justify-content-start">
+                                        <span><DOLLARIcon/>{" "}{rate.USD}</span>
+                                    </Col>
+                                    <Col md={2} className="d-flex align-items-center justify-content-center"><span></span></Col>
+                                    <Col md={6} className="d-flex align-items-center flex-row justify-content-end">
+                                        <span><EURIcon/>{" "}{rate.EUR}</span>
+                                    </Col>
+                                </Row>
+                                <Row className="">
+                                    <Col md={4} className="d-flex align-items-center justify-content-start">
+                                        <span><DOLLARIcon/>{" "}{rate.USD}</span>
+                                    </Col>
+                                    <Col md={2} className="d-flex align-items-center justify-content-center"><span></span></Col>
+                                    <Col md={6} className="d-flex align-items-center flex-row justify-content-end">
+                                        <span><UAHIcon/>{" "}{rate.UAH}</span>
+                                    </Col>
+                                </Row>
+                                <Row className="">
+                                    <Col md={4} className="d-flex align-items-center justify-content-start"><span>{<EURIcon/>}{" "}1</span></Col>
+                                    <Col md={2} className="d-flex align-items-center justify-content-center"><span></span></Col>
+                                    <Col md={6} className="d-flex align-items-center flex-row justify-content-end">
+                                        <span><UAHIcon/>{" "}{Number(rate.UAH / (rate.USD / rate.EUR)).toFixed(4)}</span>
+                                    </Col>
+                                </Row>
                             </div>
 
                         )}
@@ -86,8 +91,22 @@ const Dashboard = (props) => {
                 </Col>
                 <Col xs={12} md={4} className="mt-5">
                     <div className="bg-main main-container box-shaddow p-3">
-                        <h1>Papers</h1>
-                        
+                        <h3>Акції та ціни</h3>
+                        {bonds?.length > 0 && (
+                            <div>
+                                {bonds.map(({ticker, price}) => {
+                                    return (
+                                        <Row className="">
+                                            <Col md={4} className="d-flex align-items-center justify-content-start"><span>{ticker}</span></Col>
+                                            <Col md={2} className="d-flex align-items-center justify-content-center"><span></span></Col>
+                                            <Col md={6} className="d-flex align-items-center flex-row justify-content-end">
+                                                <span>{Number(price.toFixed(4))}</span>
+                                            </Col>
+                                        </Row>
+                                    )
+                                })}
+                            </div>
+                        ) }
                     </div>
                 </Col>
             </Row>

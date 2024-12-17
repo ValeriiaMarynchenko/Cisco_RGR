@@ -1,10 +1,11 @@
-import requests
-from flask import Flask, request, jsonify, session, make_response
+import requests # type: ignore
+from flask import Flask, request, jsonify, session, make_response # type: ignore
 import configparser
 import authentification
-import jwt
+import jwt # type: ignore
 import datetime
-from flask_cors import CORS
+from flask_cors import CORS # type: ignore
+import yfinance as yf # type: ignore
 
 config = configparser.ConfigParser()
 config.read('config.ini')
@@ -102,20 +103,35 @@ def main():
         return jsonify({"message": "Token has expired"}), 401
     except jwt.InvalidTokenError:
         return jsonify({"message": "Invalid token"}), 401
+    
+    
+
+  
 
     # 3. Звернення до функції get_economic_prediction()
     economic_prediction_response = get_economic_prediction()
     economic_prediction_data = economic_prediction_response[0].json
+    
+    
 
     # 4. Звернення до функції get_exchangeratesapi()
     exchange_rate_response = get_exchangeratesapi()
     exchange_rate_data = exchange_rate_response[0].json
 
     # 5. Передача об'єднаних даних на фронтенд
+    tickers = ['AAPL', 'GOOGL', 'AMZN']
+    stock_prices = []
+    for ticker in tickers:
+        stock = yf.Ticker(ticker)
+        data = stock.history(period="1d")
+        stock_prices.append({"ticker": ticker, "price": data['Close'].iloc[-1]})
+        print(stock_prices)
+        
     return jsonify({
         "username": username,
         "economic_prediction": economic_prediction_data.get("prediction"),
         "exchange_rates": exchange_rate_data.get("message"),
+        "stock_prices": stock_prices
     })
 
 
