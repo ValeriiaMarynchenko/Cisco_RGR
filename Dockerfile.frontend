@@ -1,0 +1,27 @@
+# Базовий образ
+FROM node:20-alpine
+
+# Встановлюємо робочу директорію
+WORKDIR /app
+
+# Копіюємо package.json і package-lock.json
+COPY frontend/package*.json ./
+
+# Встановлюємо залежності
+RUN npm install --legacy-peer-deps
+
+# Копіюємо весь код
+COPY frontend/ .
+
+# Створюємо збірку
+RUN npm run build
+
+# Сервування через Nginx
+FROM nginx:stable-alpine
+COPY --from=0 /app/build /usr/share/nginx/html
+
+# Експонуємо порт
+EXPOSE 80
+
+# Запускаємо Nginx
+CMD ["nginx", "-g", "daemon off;"]

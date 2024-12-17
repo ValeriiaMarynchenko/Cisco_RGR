@@ -1,0 +1,18 @@
+FROM python:3.13-slim
+
+WORKDIR /app
+
+# Копіюємо файл requirements.txt
+COPY backend/requirements.txt .
+
+# Встановлюємо залежності
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Копіюємо весь код Flask-додатка
+COPY backend/ .
+
+# Експонуємо порт для Flask
+EXPOSE 5000
+
+# Запускаємо додаток
+CMD ["python", "app.py"]
