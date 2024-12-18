@@ -48,7 +48,7 @@ const Dashboard = (props) => {
                     <div className="bg-main main-container box-shaddow p-3">
                         <h3 className="">Жарт для підняття настрою:</h3>
                         {joke && (
-                            <p>{joke}</p>
+                            <span>{joke}</span>
                         )}
                         
                     </div>

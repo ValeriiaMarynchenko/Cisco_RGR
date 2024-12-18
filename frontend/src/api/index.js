@@ -23,7 +23,7 @@ export const register = async (login, password) => {
 }
 
 export const fetchHome = async (headers) => {
-    console.log(headers)
+
     const res = await getRequest({
         url: "/home",
         headers

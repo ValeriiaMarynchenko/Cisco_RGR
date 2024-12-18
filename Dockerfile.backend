@@ -12,7 +12,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 COPY backend/ .
 
 # Експонуємо порт для Flask
-EXPOSE 5000
+EXPOSE 5001
 
 # Запускаємо додаток
 CMD ["python", "app.py"]
